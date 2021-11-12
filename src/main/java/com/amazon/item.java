@@ -3,20 +3,65 @@ package com.amazon;
 import java.util.Random;
 
 public class item {
-    private String Name;
+    private final String Name;
     private double Price;
     private int Quantity;
-    private int ItemID;
+    private final int ItemID;
 
+    /**
+     * Default constructor for creating an item
+     * @param name Name of item
+     * @param price Price of individual item
+     */
     public item(String name, double price){
+        Random rand = new Random();
         Name = name;
         Price = price;
+        Quantity = 0;
+        ItemID = rand.nextInt(4);
     }
 
+    /**
+     * Alternate constructor for creating an item
+     * Manually defines initial quantity and ItemID
+     * @param name Name of item
+     * @param price Price of individual item
+     * @param quantity Initially stocked quantity of item
+     * @param itemID Internal Item Identifier
+     */
     public item(String name, double price, int quantity, int itemID){
         Name = name;
         Price = price;
         Quantity = quantity;
         ItemID = itemID;
+    }
+
+    
+    /** 
+     * Adds items into stock
+     * @param amount Amount of the item being restocked
+     */
+    public void restock(int amount) {
+        Quantity += amount;
+    }
+
+    
+    /** 
+     * Purchases the item being called
+     * When item is purchased, the price of the item is returned for invoicing and the available quantity is reduced.
+     * @return double The price of the item being purchased.
+     */
+    public double purchase() {
+        Quantity -= 1;
+        return Price;
+    }
+
+    
+    /** 
+     * Returns formatted string of item information
+     * @return String Item information
+     */
+    public String toString() {
+        return Name + " has " + Quantity + " in stock and costs $" + Price;
     }
 }
