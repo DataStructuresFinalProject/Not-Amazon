@@ -10,6 +10,7 @@ public class item {
 
     /**
      * Default constructor for creating an item
+     * Initializes the item with no quantity and a randomly generated ID
      * @param name Name of item
      * @param price Price of individual item
      */
