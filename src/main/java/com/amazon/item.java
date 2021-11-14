@@ -39,6 +39,15 @@ public class item {
 
     
     /** 
+     * Method to check if the item is in stock
+     * @return boolean True if the item quanitity is greater than 0
+     */
+    public boolean inStock() {
+        return Quantity>0;
+    }
+
+    
+    /** 
      * Adds items into stock
      * @param amount Amount of the item being restocked
      */
