@@ -66,7 +66,18 @@ public class item {
         return Price;
     }
 
-    
+    public String getName() {
+        return Name;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public int getAmount() {
+        return Quantity;    
+    }
+
     /** 
      * Returns formatted string of item information
      * @return String Item information
