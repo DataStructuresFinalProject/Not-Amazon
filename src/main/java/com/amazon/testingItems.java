@@ -43,7 +43,7 @@ public class testingItems {
 		item item37 = new item("Mens Plaid PJ Pants", 12.74, 96, 37);
 		item item38 = new item("Mens Beanie", 16.99, 54, 38);
 		item item39 = new item("Webcam", 15.99, 32, 39);
-		item item40 = new item("Telescope", 299.99, 1,);
+		item item40 = new item("Telescope", 299.99, 1, 40);
 		
 		
 		
