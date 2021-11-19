@@ -39,6 +39,11 @@ public class testingItems {
 		item item33 = new item("Trampoline", 199.99, 0, 33);
 		item item34 = new item("Table tennis", 199.99, 72, 34);
 		item item35 = new item("Bowling kit", 79.99, 42, 35);
+		item item36 = new item("Mens Sweatshirt", 11.99, 67, 36);
+		item item37 = new item("Mens Plaid PJ Pants", 12.74, 96, 37);
+		item item38 = new item("Mens Beanie", 16.99, 54, 38);
+		item item39 = new item("Webcam", 15.99, 32, 39);
+		item item40 = new item("Telescope", 299.99, 1,);
 		
 		
 		
