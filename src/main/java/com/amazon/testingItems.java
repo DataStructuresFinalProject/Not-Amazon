@@ -29,6 +29,16 @@ public class testingItems {
 		item item23 = new item("Belt", 9.99, 0, 23);
 		item item24 = new item("Necklaces", 39.99, 18, 24);
 		item item25 = new item("Backpack", 45.0, 72, 25);
+		item item26 = new item("Toaster Oven", 59.99, 92, 26);
+		item item27 = new item("Crockpot", 59.99, 43, 27);
+		item item28 = new item("Cast Iron Pan", 29.99, 19, 28);
+		item item29 = new item("Stainless Pots and Pans set", 499.99, 4, 29);
+		item item30 = new item("Blender", 524.0, 76, 30);
+		item item31 = new item("Baseball starter kit", 99.99, 2, 31);
+		item item32 = new item("Eliptical", 199.99, 4, 32);
+		item item33 = new item("Trampoline", 199.99, 0, 33);
+		item item34 = new item("Table tennis", 199.99, 72, 34);
+		item item35 = new item("Bowling kit", 79.99, 42, 35);
 		
 		
 		
