@@ -24,6 +24,11 @@ public class testingItems {
 		item item18 = new item("Shoe", 99.99, 76, 18);
 		item item19 = new item("Shoe laces", 4.99, 76, 19);
 		item item20 = new item("Socks", 9.99, 42, 20);
+		item item21 = new item("Pants", 14.99, 73, 21);
+		item item22 = new item("Underwear", 9.99, 12, 22);
+		item item23 = new item("Belt", 9.99, 0, 23);
+		item item24 = new item("Necklaces", 39.99, 18, 24);
+		item item25 = new item("Backpack", 45.0, 72, 25);
 		
 		
 		
