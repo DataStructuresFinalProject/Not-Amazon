@@ -24,6 +24,26 @@ public class testingItems {
 		item item18 = new item("Shoe", 99.99, 76, 18);
 		item item19 = new item("Shoe laces", 4.99, 76, 19);
 		item item20 = new item("Socks", 9.99, 42, 20);
+		item item21 = new item("Pants", 14.99, 73, 21);
+		item item22 = new item("Underwear", 9.99, 12, 22);
+		item item23 = new item("Belt", 9.99, 0, 23);
+		item item24 = new item("Necklaces", 39.99, 18, 24);
+		item item25 = new item("Backpack", 45.0, 72, 25);
+		item item26 = new item("Toaster Oven", 59.99, 92, 26);
+		item item27 = new item("Crockpot", 59.99, 43, 27);
+		item item28 = new item("Cast Iron Pan", 29.99, 19, 28);
+		item item29 = new item("Stainless Pots and Pans set", 499.99, 4, 29);
+		item item30 = new item("Blender", 524.0, 76, 30);
+		item item31 = new item("Baseball starter kit", 99.99, 2, 31);
+		item item32 = new item("Eliptical", 199.99, 4, 32);
+		item item33 = new item("Trampoline", 199.99, 0, 33);
+		item item34 = new item("Table tennis", 199.99, 72, 34);
+		item item35 = new item("Bowling kit", 79.99, 42, 35);
+		item item36 = new item("Mens Sweatshirt", 11.99, 67, 36);
+		item item37 = new item("Mens Plaid PJ Pants", 12.74, 96, 37);
+		item item38 = new item("Mens Beanie", 16.99, 54, 38);
+		item item39 = new item("Webcam", 15.99, 32, 39);
+		item item40 = new item("Telescope", 299.99, 1, 40);
 		
 		
 		
