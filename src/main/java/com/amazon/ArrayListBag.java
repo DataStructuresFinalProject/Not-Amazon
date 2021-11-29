@@ -2,6 +2,7 @@ package com.amazon;
 
 import java.util.ArrayList;
 
+// test comment
 public class ArrayListBag<T> implements BagInterface<T> {
 	private final ArrayList<T> bag;
 	
