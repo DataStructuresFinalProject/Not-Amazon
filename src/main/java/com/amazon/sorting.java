@@ -55,22 +55,4 @@ public class sorting {
     }
 
 
-
-    public static void main(String[] args){
-
-        String[] array = {"Bz", "A", "D", "C", "Bryan"};
-        //double[] array= {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-        //double[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        //sortPriceSmallToLarge(array, array.length);
-        //sortPriceLargeToSmall(array, array.length);
-        alpabeticalSort(array);
-
-
-        for(int i = 0; i < array.length; i++){
-            System.out.print(array[i] + " ");
-        }
-
-    }
-
-
 }
