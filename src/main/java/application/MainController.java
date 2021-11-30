@@ -131,6 +131,7 @@ public class MainController implements Initializable{
     	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/itemPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) item1.getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(itemScene);
 		window.show();
     }
@@ -247,6 +248,7 @@ public class MainController implements Initializable{
     	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/cartPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) item1.getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(itemScene);
 		window.show();
 
@@ -377,6 +379,7 @@ public class MainController implements Initializable{
 	private void setPage(int page, ArrayList<Item> items)
 	{
 		int numOfPages = findNumOfPages(items);
+		System.out.print(numOfPages);
 		int numOfBackpage = items.size()%4;
 		
 		Item first;
@@ -384,7 +387,12 @@ public class MainController implements Initializable{
 		Item third;
 		Item fourth;
 		
-		if (page == numOfPages)
+		if (numOfPages == 0)
+		{
+			leftButton.setDisable(true);
+			rightButton.setDisable(true);
+		}
+		else if (page == numOfPages)
 		{
 			leftButton.setDisable(false);
 			rightButton.setDisable(true);

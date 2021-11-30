@@ -86,6 +86,7 @@ public class CartController implements Initializable{
     	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/mainPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) image1.getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(itemScene);
 		window.show();
     }

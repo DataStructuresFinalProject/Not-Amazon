@@ -43,6 +43,9 @@ public class ItemController implements Initializable{
 
     @FXML
     private ImageView topBar;
+    
+    @FXML
+    private Text quantity;
 
     Item currentItem;
     
@@ -60,6 +63,7 @@ public class ItemController implements Initializable{
     	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/mainPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) name.getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(itemScene);
 		window.show();
     }
@@ -71,6 +75,7 @@ public class ItemController implements Initializable{
 		currentItem = itemStore.getCurrentItem();
 		name.setText(currentItem.getName());
 		price.setText("Price: "+ currentItem.getPrice());
+		quantity.setText("Quantity: " + currentItem.getAmount());
 		
 	}
 }
