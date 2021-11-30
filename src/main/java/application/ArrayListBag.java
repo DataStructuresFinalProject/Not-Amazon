@@ -1,4 +1,4 @@
-package com.amazon;
+package application;
 
 import java.util.ArrayList;
 

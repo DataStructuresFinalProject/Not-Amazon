@@ -1,4 +1,4 @@
-package com.amazon;
+package application;
 
 import java.util.Arrays;
 
@@ -9,11 +9,9 @@ public class sorting {
             int indexOfSmallest = getIndexOfSmallest(x, i, n - 1);
             swap(x, i, indexOfSmallest);
         }
-
-
     }
 
-    private static void sortPriceLargeToSmall(double[] x, int n){
+    public static void sortPriceLargeToSmall(double[] x, int n){
         for(int i = 0; i < n - 1; i++){
             int indexOfLargest = getIndexOfLargest(x, i, n - 1);
             swap(x, i, indexOfLargest);

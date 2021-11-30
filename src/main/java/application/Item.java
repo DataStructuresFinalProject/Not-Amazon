@@ -1,8 +1,8 @@
-package com.amazon;
+package application;
 
 import java.util.Random;
 
-public class item {
+public class Item {
     private final String Name;
     private double Price;
     private int Quantity;
@@ -14,7 +14,7 @@ public class item {
      * @param name Name of item
      * @param price Price of individual item
      */
-    public item(String name, double price){
+    public Item(String name, double price){
         Random rand = new Random();
         Name = name;
         Price = price;
@@ -30,7 +30,7 @@ public class item {
      * @param quantity Initially stocked quantity of item
      * @param itemID Internal Item Identifier
      */
-    public item(String name, double price, int quantity, int itemID){
+    public Item(String name, double price, int quantity, int itemID){
         Name = name;
         Price = price;
         Quantity = quantity;

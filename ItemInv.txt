@@ -1,0 +1,14 @@
+Toothbrush'5.0'10'1
+Red Sox Hat'30.0'5'2
+Lawn Chair'25.0'30'3
+Eraser'3.0'1000'4
+Whiteboard'20.0'555'5
+MacBook'1000.0'0'6
+Water Bottle'15.0'100'7
+Pillow'10.0'900'8
+Blanket'45.0'62'9
+Keyboard'150.0'9'10
+Monitor'200.0'0'11
+Mousepad'50.0'32'12
+Hose'25.0'510'13
+Bannana'5.0'59'14

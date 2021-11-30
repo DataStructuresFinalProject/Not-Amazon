@@ -1,4 +1,4 @@
-package com.amazon;
+package application;
 
 /**
  * BagInterface
