@@ -66,6 +66,30 @@ public class item {
         return Price;
     }
 
+    /**
+     * Returns the name of the item
+     * @return name of the item as a String
+     */
+    public String getName(){
+        return this.Name;
+    }
+
+    /**
+     * Returns the price of an item
+     * @return price of an item as a double
+     */
+    public double getPrice(){
+        return this.Price;
+    }
+
+    /**
+     * Returns the itemID of an item
+     * @return the itemID of an item as an int
+     */
+    public int getItemID(){
+        return this.ItemID;
+    }
+
     
     /** 
      * Returns formatted string of item information
