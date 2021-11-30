@@ -3,54 +3,62 @@ package application;
 import java.util.Arrays;
 
 public class sorting {
-    
-    public static void sortPriceSmallToLarge(double[] x, int n){
-        for(int i  = 0; i < n - 1; i++){
-            int indexOfSmallest = getIndexOfSmallest(x, i, n - 1);
-            swap(x, i, indexOfSmallest);
-        }
-    }
 
-    public static void sortPriceLargeToSmall(double[] x, int n){
-        for(int i = 0; i < n - 1; i++){
-            int indexOfLargest = getIndexOfLargest(x, i, n - 1);
-            swap(x, i, indexOfLargest);
-        }
-    }
+    /**
+     * Sorts the array from smallest to largest, or puts strings in alphabetical order
+     * @param <T> 
+     * @param a Array passed in
+     * @param n Length of the Array
+     */
+    public static <T extends Comparable<? super T>> void sortSmallToLarge(T[] a, int n) {
+		for(int index = 0; index < n - 1; index++) {
+			int indexOfNextSmallest = getIndexOfSmallest(a, index, n-1);
+			swap(a, index, indexOfNextSmallest);
+		}
+	}
 
-    private static int getIndexOfLargest(double[] x, int first, int last){
-        double largest = x[first];
-        int indexOfLargest = first;
-        for(int i = first + 1; i <= last; i++){
-            if(x[i] > largest){
-                largest = x[i];
-                indexOfLargest = i;
-            }
-        }
-        return indexOfLargest;
-    }
+    /**
+     * Sorts the array from largest to smallest
+     * @param <T> 
+     * @param a Array passed in
+     * @param n Length of the Array
+     */
+    public static <T extends Comparable<? super T>> void sortLargeToSmall(T[] a, int n) {
+		for(int index = 0; index < n - 1; index++) {
+			int indexOfNextLargest = getIndexOfLargest(a, index, n-1);
+			swap(a, index, indexOfNextLargest);
+		}
+	}
 
-    private static int getIndexOfSmallest(double[] x, int first, int last) {
-        double min = x[first];
-        int indexOfMin = first;
-        for(int i = first + 1; i <= last; i++){
-            if(x[i] < min){
-                min = x[i];
-                indexOfMin = i;
-            }
-        }
-        return indexOfMin;
-    }
+	private static void swap(Object[] a, int i, int j) {
+		Object temp = a[i];
+		a[i] = a[j];
+		a[j] = temp; 
+		
+	}
 
-    private static void swap(double[] x, int i, int j){
-        double temp = x[i];
-        x[i] = x[j];
-        x[j] = temp;
-    }
+	private static <T extends Comparable<? super T>> int getIndexOfSmallest(T[] a, int first, int last){
+		T min = a[first];
+		int indexOfMin = first;
+		for (int index = first + 1; index <= last; index++){
+			if (a[index].compareTo(min) < 0){
+				min = a[index];
+				indexOfMin = index;
+			}
+		}
+		return indexOfMin;
+	}
 
-    public static void alpabeticalSort(String[] x){
-        Arrays.sort(x);
-    }
-
+    private static <T extends Comparable<? super T>> int getIndexOfLargest(T[] a, int first, int last){
+		T max = a[first];
+		int indexOfMax = first;
+		for (int index = first + 1; index <= last; index++){
+			if (a[index].compareTo(max) > 0){
+				max = a[index];
+				indexOfMax = index;
+			}
+		}
+		return indexOfMax;
+	}
 
 }

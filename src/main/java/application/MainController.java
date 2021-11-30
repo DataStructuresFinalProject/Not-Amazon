@@ -78,6 +78,7 @@ public class MainController implements Initializable{
     
     private int currentPage = 0;
     private ArrayList<Item> itemStorage = new ArrayList<Item>();
+    private ArrayList<Item> copyItemStorage = new ArrayList<Item>(itemStorage);
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -106,16 +107,21 @@ public class MainController implements Initializable{
 	    	int quantity = Integer.parseInt(temp.substring(0, temp.indexOf("'")));
 	    	temp = temp.substring(temp.indexOf("'") + 1);
 	    	
-	    	int itemid = Integer.parseInt(temp.substring(0));
+	    	int itemId = Integer.parseInt(temp.substring(0));
 	    	
-	    	Item tempItem = new Item(name, price, quantity, itemid);
+	    	Item tempItem = new Item(name, price, quantity, itemId);
 	    	itemStorage.add(tempItem);
 	    }
+	    copyItemStorage = itemStorage;
 	    setPage(0, itemStorage);   
 	}
     
     @FXML
     private void itemClick(MouseEvent event) throws IOException
+    /**
+     * Switches to itemPage.fxml
+     * @param event any mouse event
+     */
     {
     	String id = event.getPickResult().getIntersectedNode().getId();
     	Item currentItem = itemStorage.get(((Integer.parseInt(id.substring(id.length()-1)))-1)+(4*currentPage));
@@ -131,20 +137,32 @@ public class MainController implements Initializable{
     
     @FXML
     private void goRight()
+    /**
+     * Moves to next page
+     */
     {
     	currentPage++;
     	setPage(currentPage, itemStorage);
+    	System.out.println(currentPage);
     }
     
     @FXML
     private void goLeft()
+    /**
+     * Moves to previous page
+     */
     {
     	currentPage--;
     	setPage(currentPage, itemStorage);
+    	System.out.println(currentPage);
     }
     
     @FXML
     private void goSearch()
+    /**
+     * Takes String from search bar, searches for Strings that include
+     * it or its pieces, and displays them
+     */
     {
     	if (!searchBar.getText().trim().isEmpty())
     	{
@@ -152,31 +170,49 @@ public class MainController implements Initializable{
 	    	if (!searchArrayList.isEmpty())
 	    	{
 		    	currentPage = 0;
-		    	if (findNumOfPages(searchArrayList) == 1 || findNumOfPages(searchArrayList) == 0)
+		    	copyItemStorage = itemStorage;
+		    	itemStorage = searchArrayList;
+		    	setPage(currentPage, itemStorage);
+		    	/*if (findNumOfPages(searchArrayList) == 1 || findNumOfPages(searchArrayList) == 0)
 		    	{
 		    		setPage(currentPage, searchArrayList, true);
 		    	}
 		    	else
 		    	{
 		    		setPage(currentPage, searchArrayList);
-		    	}
+		    	}*/
 	    	}
     	}
     }
     
     @FXML
     private void goHome()
+    /**
+     * Returns to first page
+     */
     {
+    	sortDrop.setValue("No sort");
+    	itemStorage = copyItemStorage;
     	currentPage = 0;
     	setPage(currentPage, itemStorage);
     }
     
     private int findNumOfPages(ArrayList<Item> items)
+    /**
+     * Finds the number of pages an ArrayList of items will take up
+     * @param items arraylist of item classes
+     * @return int number of pages data will take up
+     */
     {
     	return Math.abs((int) Math.ceil(items.size()/4.0)-1);
     }
     
     private ArrayList<Item> searchString(String input)
+    /**
+     * 
+     * @param input
+     * @return ArrayList<Item>
+     */
     {
     	ArrayList<Item> itemStorageClone = new ArrayList<>(itemStorage);
     	ArrayList<Item> newList = new ArrayList<Item>();
@@ -216,32 +252,114 @@ public class MainController implements Initializable{
 
     }
     
-    @FXML
+    @SuppressWarnings("unchecked")
+	@FXML
     private void dropSort()
     {
-    	sorting doSort = new sorting();
     	sortDrop.setOnAction((e) -> {
+    		Double[] priceArray = new Double[itemStorage.size()];
+    		ArrayList<Item> tempItemStorage = (ArrayList<Item>) itemStorage.clone();
+    		ArrayList<Item> sortedList = new ArrayList<Item>();
+    		ArrayList<Double> priceArrayList = new ArrayList<Double>();
+    		boolean exit = false;
+    		int count = 0;
+    		
     		switch(sortDrop.getValue()) {
     			case "No sort":
+    				itemStorage = copyItemStorage;
     				setPage(currentPage, itemStorage);
     				break;
     			case "Price Ascending":
-    				System.out.println("ran 1");
-    				//setPage(0,);
+    				for(Item x : tempItemStorage)
+    				{
+    					priceArrayList.add(x.getPrice());
+    				}
+    				priceArrayList.toArray(priceArray);
+    				
+    				sorting.sortSmallToLarge(priceArray, priceArray.length);
+    				
+    				for(double x : priceArray)
+    				{
+    					while (exit != true)
+    					{
+    						if (tempItemStorage.get(count).getPrice() == x)
+    						{
+    							sortedList.add(tempItemStorage.get(count));
+    							tempItemStorage.remove(tempItemStorage.get(count));
+    							exit = true;
+    						}
+    						count++;
+    					}
+    					count = 0;
+    					exit = false;
+    				}
+    				itemStorage = sortedList;
+    				setPage(currentPage, itemStorage);
     				break;
+    				
     			case "Price Descending":
-    				System.out.println("ran 2");
-    				//setPage(0,);
-    				break; 				
+    				for(Item x : tempItemStorage)
+    				{
+    					priceArrayList.add(x.getPrice());
+    				}
+    				priceArrayList.toArray(priceArray);
+    				
+    				sorting.sortLargeToSmall(priceArray, priceArray.length);
+    				
+    				for(double x : priceArray)
+    				{
+    					while (exit != true)
+    					{
+    						if (tempItemStorage.get(count).getPrice() == x)
+    						{
+    							sortedList.add(tempItemStorage.get(count));
+    							tempItemStorage.remove(tempItemStorage.get(count));
+    							exit = true;
+    						}
+    						count++;
+    					}
+    					count = 0;
+    					exit = false;
+    				}
+    				itemStorage = sortedList;
+    				setPage(currentPage, itemStorage);
+    				break; 	
+    				
     			case "Alphabetical":
-    				System.out.println("ran 3");
-    				//setPage(0,);
+    				String[] nameArray = new String[itemStorage.size()];
+    	    		ArrayList<String> nameArrayList = new ArrayList<String>();
+    	    		
+    				for(Item x : tempItemStorage)
+    				{
+    					nameArrayList.add(x.getName());
+    				}
+    				nameArrayList.toArray(nameArray);
+    				
+    				sorting.sortSmallToLarge(nameArray, nameArray.length);
+    				
+    				for(String x : nameArray)
+    				{
+    					while (exit != true)
+    					{
+    						if (tempItemStorage.get(count).getName().equalsIgnoreCase(x))
+    						{
+    							sortedList.add(tempItemStorage.get(count));
+    							tempItemStorage.remove(tempItemStorage.get(count));
+    							exit = true;
+    						}
+    						count++;
+    					}
+    					count = 0;
+    					exit = false;
+    				}
+    				itemStorage = sortedList;
+    				setPage(currentPage, itemStorage);
     				break;
     			}
     	});
     }
 	
-    private void setPage(int page, ArrayList<Item> items, boolean lock)
+   /* private void setPage(int page, ArrayList<Item> items, boolean lock)
 	{
     	setPage(page, items);
     	if (lock == true)
@@ -254,7 +372,7 @@ public class MainController implements Initializable{
     		leftButton.setDisable(false);
 			rightButton.setDisable(false);
     	}
-	}
+	}*/
     
 	private void setPage(int page, ArrayList<Item> items)
 	{
