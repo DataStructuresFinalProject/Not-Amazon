@@ -4,6 +4,11 @@ import java.util.Arrays;
 
 public class sorting {
     
+    /**
+     * Sorts the doubles on the array from smallest to largest
+     * @param x Array of doubles containing the prices of all the items
+     * @param n Length of the input array
+     */
     public static void sortPriceSmallToLarge(double[] x, int n){
         for(int i  = 0; i < n - 1; i++){
             int indexOfSmallest = getIndexOfSmallest(x, i, n - 1);
@@ -12,7 +17,11 @@ public class sorting {
 
 
     }
-
+    /**
+     * Sorts the doubles in the array from largest to smallest
+     * @param x Array of doubles containing the prices of all the items
+     * @param n Length of the input array
+     */
     private static void sortPriceLargeToSmall(double[] x, int n){
         for(int i = 0; i < n - 1; i++){
             int indexOfLargest = getIndexOfLargest(x, i, n - 1);
@@ -49,7 +58,10 @@ public class sorting {
         x[i] = x[j];
         x[j] = temp;
     }
-
+    /**
+     * Sorts the given String array into alphabetical order
+     * @param x String array containing the names of all the items
+     */
     public static void alpabeticalSort(String[] x){
         Arrays.sort(x);
     }
