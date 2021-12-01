@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -107,9 +108,12 @@ public class MainController implements Initializable{
 	    	int quantity = Integer.parseInt(temp.substring(0, temp.indexOf("'")));
 	    	temp = temp.substring(temp.indexOf("'") + 1);
 	    	
-	    	int itemId = Integer.parseInt(temp.substring(0));
+	    	int itemId = Integer.parseInt(temp.substring(0, temp.indexOf("'")));
+	    	temp = temp.substring(temp.indexOf("'") + 1);
 	    	
-	    	Item tempItem = new Item(name, price, quantity, itemId);
+	    	String image = temp.substring(0);
+	    	
+	    	Item tempItem = new Item(name, price, quantity, itemId, image);
 	    	itemStorage.add(tempItem);
 	    }
 	    copyItemStorage = itemStorage;
@@ -413,6 +417,7 @@ public class MainController implements Initializable{
 			switch(numOfBackpage) {
 				case 1: numOfBackpage = 1;
 					first = items.get((page*4));
+					item1.setImage(new Image(first.getImage()));
 					info1.setText(first.getName() + " - " + first.getPrice());
 					
 					info2.setText("");

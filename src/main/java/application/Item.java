@@ -7,6 +7,7 @@ public class Item {
     private double Price;
     private int Quantity;
     private final int ItemID;
+    private String image;
 
     /**
      * Default constructor for creating an item
@@ -14,12 +15,13 @@ public class Item {
      * @param name Name of item
      * @param price Price of individual item
      */
-    public Item(String name, double price){
+    public Item(String name, double price, String image){
         Random rand = new Random();
         Name = name;
         Price = price;
         Quantity = 0;
         ItemID = rand.nextInt(4);
+        this.image = image;
     }
 
     /**
@@ -30,11 +32,12 @@ public class Item {
      * @param quantity Initially stocked quantity of item
      * @param itemID Internal Item Identifier
      */
-    public Item(String name, double price, int quantity, int itemID){
+    public Item(String name, double price, int quantity, int itemID, String image){
         Name = name;
         Price = price;
         Quantity = quantity;
         ItemID = itemID;
+        this.image = image;
     }
 
     
@@ -76,6 +79,10 @@ public class Item {
 
     public int getAmount() {
         return Quantity;    
+    }
+    
+    public String getImage() {
+        return image;
     }
 
     /** 
