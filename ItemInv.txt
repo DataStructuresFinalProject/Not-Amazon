@@ -1,1 +1,1 @@
-Toothbrush'5.0'10'1'application/testImage.jpg
+Toothbrush'5.0'10'toothbrush.jpg

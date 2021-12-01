@@ -108,12 +108,9 @@ public class MainController implements Initializable{
 	    	int quantity = Integer.parseInt(temp.substring(0, temp.indexOf("'")));
 	    	temp = temp.substring(temp.indexOf("'") + 1);
 	    	
-	    	int itemId = Integer.parseInt(temp.substring(0, temp.indexOf("'")));
-	    	temp = temp.substring(temp.indexOf("'") + 1);
-	    	
 	    	String image = temp.substring(0);
 	    	
-	    	Item tempItem = new Item(name, price, quantity, itemId, image);
+	    	Item tempItem = new Item(name, price, quantity, image);
 	    	itemStorage.add(tempItem);
 	    }
 	    copyItemStorage = itemStorage;
@@ -128,16 +125,24 @@ public class MainController implements Initializable{
      */
     {
     	String id = event.getPickResult().getIntersectedNode().getId();
-    	Item currentItem = itemStorage.get(((Integer.parseInt(id.substring(id.length()-1)))-1)+(4*currentPage));
-    	ChosenItemData itemStore = ChosenItemData.getInstance();
-    	itemStore.setCurrentItem(currentItem);
-    	
-    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/itemPage.fxml"));
-		Scene itemScene = new Scene(root2);
-		Stage window = (Stage) item1.getScene().getWindow();
-		window.setResizable(false);
-		window.setScene(itemScene);
-		window.show();
+    	try
+    	{
+	    	Item currentItem = itemStorage.get(((Integer.parseInt(id.substring(id.length()-1)))-1)+(4*currentPage));
+	    	System.out.println(currentItem);
+	    	ChosenItemData itemStore = ChosenItemData.getInstance();
+	    	itemStore.setCurrentItem(currentItem);
+	    	
+	    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("itemPage.fxml"));
+			Scene itemScene = new Scene(root2);
+			Stage window = (Stage) item1.getScene().getWindow();
+			window.setResizable(false);
+			window.setScene(itemScene);
+			window.show();
+    	}
+    	catch (Exception e)
+    	{
+    		
+    	}
     }
     
     @FXML
@@ -148,7 +153,6 @@ public class MainController implements Initializable{
     {
     	currentPage++;
     	setPage(currentPage, itemStorage);
-    	System.out.println(currentPage);
     }
     
     @FXML
@@ -159,7 +163,6 @@ public class MainController implements Initializable{
     {
     	currentPage--;
     	setPage(currentPage, itemStorage);
-    	System.out.println(currentPage);
     }
     
     @FXML
@@ -178,14 +181,6 @@ public class MainController implements Initializable{
 		    	copyItemStorage = itemStorage;
 		    	itemStorage = searchArrayList;
 		    	setPage(currentPage, itemStorage);
-		    	/*if (findNumOfPages(searchArrayList) == 1 || findNumOfPages(searchArrayList) == 0)
-		    	{
-		    		setPage(currentPage, searchArrayList, true);
-		    	}
-		    	else
-		    	{
-		    		setPage(currentPage, searchArrayList);
-		    	}*/
 	    	}
     	}
     }
@@ -249,7 +244,7 @@ public class MainController implements Initializable{
     @FXML
     private void goCart() throws IOException
     {
-    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/cartPage.fxml"));
+    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("cartPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) item1.getScene().getWindow();
 		window.setResizable(false);
@@ -364,32 +359,27 @@ public class MainController implements Initializable{
     			}
     	});
     }
-	
-   /* private void setPage(int page, ArrayList<Item> items, boolean lock)
-	{
-    	setPage(page, items);
-    	if (lock == true)
-    	{
-	    	leftButton.setDisable(true);
-			rightButton.setDisable(true);
-    	}
-    	else
-    	{
-    		leftButton.setDisable(false);
-			rightButton.setDisable(false);
-    	}
-	}*/
+    
+    private void resetImages()
+    {
+    	item1.setImage(null);
+    	item2.setImage(null);
+    	item3.setImage(null);
+    	item4.setImage(null);
+    }
     
 	private void setPage(int page, ArrayList<Item> items)
 	{
 		int numOfPages = findNumOfPages(items);
-		System.out.print(numOfPages);
+		
 		int numOfBackpage = items.size()%4;
 		
 		Item first;
 		Item second;
 		Item third;
 		Item fourth;
+		
+		resetImages();
 		
 		if (numOfPages == 0)
 		{
@@ -417,6 +407,7 @@ public class MainController implements Initializable{
 			switch(numOfBackpage) {
 				case 1: numOfBackpage = 1;
 					first = items.get((page*4));
+					
 					item1.setImage(new Image(first.getImage()));
 					info1.setText(first.getName() + " - " + first.getPrice());
 					
@@ -430,8 +421,11 @@ public class MainController implements Initializable{
 				case 2: numOfBackpage = 2;
 					first = items.get((page*4));
 					second = items.get((page*4)+1);
+					
+					item1.setImage(new Image(first.getImage()));
 					info1.setText(first.getName() + " - " + first.getPrice());
 					
+					item2.setImage(new Image(second.getImage()));
 					info2.setText(second.getName() + " - " + second.getPrice());
 					
 					info3.setText("");
@@ -443,10 +437,14 @@ public class MainController implements Initializable{
 					first = items.get((page*4));
 					second = items.get((page*4)+1);
 					third = items.get((page*4)+2);
+					
+					item1.setImage(new Image(first.getImage()));
 					info1.setText(first.getName() + " - " + first.getPrice());
 					
+					item2.setImage(new Image(second.getImage()));
 					info2.setText(second.getName() + " - " + second.getPrice());
 					
+					item3.setImage(new Image(third.getImage()));
 					info3.setText(third.getName() + " - " + third.getPrice());
 					
 					info4.setText("");
@@ -460,12 +458,16 @@ public class MainController implements Initializable{
 			third = items.get((page*4)+2);
 			fourth = items.get((page*4)+3);
 			
+			item1.setImage(new Image(first.getImage()));
 			info1.setText(first.getName() + " - " + first.getPrice());
 			
+			item2.setImage(new Image(second.getImage()));
 			info2.setText(second.getName() + " - " + second.getPrice());
 			
+			item3.setImage(new Image(third.getImage()));
 			info3.setText(third.getName() + " - " + third.getPrice());
 			
+			item4.setImage(new Image(fourth.getImage()));
 			info4.setText(fourth.getName() + " - " + fourth.getPrice());
 		}
 	}

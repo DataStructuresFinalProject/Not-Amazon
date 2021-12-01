@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -60,7 +61,7 @@ public class ItemController implements Initializable{
     @FXML
     private void goHome() throws IOException
     {
-    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("application/mainPage.fxml"));
+    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("mainPage.fxml"));
 		Scene itemScene = new Scene(root2);
 		Stage window = (Stage) name.getScene().getWindow();
 		window.setResizable(false);
@@ -76,6 +77,7 @@ public class ItemController implements Initializable{
 		name.setText(currentItem.getName());
 		price.setText("Price: "+ currentItem.getPrice());
 		quantity.setText("Quantity: " + currentItem.getAmount());
+		productImage.setImage(new Image(currentItem.getImage()));
 		
 	}
 }

@@ -6,7 +6,6 @@ public class Item {
     private final String Name;
     private double Price;
     private int Quantity;
-    private final int ItemID;
     private String image;
 
     /**
@@ -16,11 +15,9 @@ public class Item {
      * @param price Price of individual item
      */
     public Item(String name, double price, String image){
-        Random rand = new Random();
         Name = name;
         Price = price;
         Quantity = 0;
-        ItemID = rand.nextInt(4);
         this.image = image;
     }
 
@@ -32,11 +29,10 @@ public class Item {
      * @param quantity Initially stocked quantity of item
      * @param itemID Internal Item Identifier
      */
-    public Item(String name, double price, int quantity, int itemID, String image){
+    public Item(String name, double price, int quantity, String image){
         Name = name;
         Price = price;
         Quantity = quantity;
-        ItemID = itemID;
         this.image = image;
     }
 
