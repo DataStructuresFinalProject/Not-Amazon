@@ -215,7 +215,7 @@ public class LinkList<T> implements ListInterface<T> {
 
         Node<T> currentNode = FirstNode;
 
-        for (int i = 0; i < index; i++) {
+        for (int i = 1; i < index; i++) {
             currentNode = currentNode.getNextNode();
         }
 
