@@ -1,8 +1,8 @@
 package application;
 
-public class LinkList<T> implements ListInterface<T> {
+public class LinkList<Item> implements ListInterface<Item> {
 
-    Node<T> FirstNode;
+    Node<Item> FirstNode;
     private int CurrentAmount;
 
     /**
@@ -16,8 +16,8 @@ public class LinkList<T> implements ListInterface<T> {
      * Alternate constructor that creates a LinkedList with a First Node.
      * @param newEntry Data entry to be assigned to the first node in the chain.
      */
-    public LinkList(T newEntry) {
-        FirstNode = new Node<T>(newEntry);
+    public LinkList(Item newEntry) {
+        FirstNode = new Node<Item>(newEntry);
         FirstNode.NextNode = null;
     }
 
@@ -27,8 +27,8 @@ public class LinkList<T> implements ListInterface<T> {
      * @param newEntry Data value to be added to the list.
      */
     @Override
-    public void add(T newEntry) {
-        Node<T> newNode = new Node<T>(newEntry);
+    public void add(Item newEntry) {
+        Node<Item> newNode = new Node<Item>(newEntry);
         if (CurrentAmount == 0) {
             newNode.NextNode = null;
         } else {
@@ -45,16 +45,16 @@ public class LinkList<T> implements ListInterface<T> {
      * @param newEntry Data entry for the node.
      */
     @Override
-    public void add(int newPosition, T newEntry) {
+    public void add(int newPosition, Item newEntry) {
         if ((newPosition >= 1) && (newPosition <= CurrentAmount + 1)) {
-            Node<T> newNode = new Node<T>(newEntry);
+            Node<Item> newNode = new Node<Item>(newEntry);
 
             if (newPosition == 1) {
                 newNode.setNextNode(FirstNode);
                 FirstNode = newNode;
             } else {
-                Node<T> nodeBefore = getNode(newPosition-1);
-                Node<T> nodeAfter = nodeBefore.getNextNode();
+                Node<Item> nodeBefore = getNode(newPosition-1);
+                Node<Item> nodeAfter = nodeBefore.getNextNode();
                 newNode.setNextNode(nodeAfter);
                 nodeBefore.setNextNode(newNode);
             }
@@ -72,18 +72,18 @@ public class LinkList<T> implements ListInterface<T> {
      * @return T Data value attached to the removed node.
      */
     @Override
-    public T remove(int givenPosition) {
-        T result;
+    public Item remove(int givenPosition) {
+        Item result;
 
         if ((givenPosition >= 1) && (givenPosition <= CurrentAmount)) {
             if (givenPosition == 1) {
                 result = FirstNode.getData();
                 FirstNode = FirstNode.getNextNode();
             } else {
-                Node<T> nodeBefore = getNode(givenPosition-1);
-                Node<T> nodeToRemove = nodeBefore.getNextNode();
+                Node<Item> nodeBefore = getNode(givenPosition-1);
+                Node<Item> nodeToRemove = nodeBefore.getNextNode();
                 result = nodeToRemove.getData();
-                Node<T> nodeAfter = nodeToRemove.getNextNode();
+                Node<Item> nodeAfter = nodeToRemove.getNextNode();
                 nodeBefore.setNextNode(nodeAfter);
             }
             CurrentAmount--;
@@ -110,10 +110,10 @@ public class LinkList<T> implements ListInterface<T> {
      * @return T Old data value from the node.
      */
     @Override
-    public T replace(int givenPosition, T newEntry) {
+    public Item replace(int givenPosition, Item newEntry) {
         if ((givenPosition >= 1) && (givenPosition <= CurrentAmount)) {
-            Node<T> replacedNode = getNode(givenPosition);
-            T originalData = replacedNode.getData();
+            Node<Item> replacedNode = getNode(givenPosition);
+            Item originalData = replacedNode.getData();
             replacedNode.setData(newEntry);
             return originalData;
         } else {
@@ -129,7 +129,7 @@ public class LinkList<T> implements ListInterface<T> {
      * @return T The data value from the indexed node.
      */
     @Override
-    public T getEntry(int givenPosition) {
+    public Item getEntry(int givenPosition) {
 
         if ((givenPosition >= 1) && (givenPosition <= CurrentAmount)) {
             return getNode(givenPosition).getData();
@@ -144,13 +144,13 @@ public class LinkList<T> implements ListInterface<T> {
      * @return T[] The compiled array filed with the data values.
      */
     @Override
-    public T[] toArray() {
+    public Item[] toArray() {
 
         @SuppressWarnings("unchecked")
-        T[] result = (T[])new Object[CurrentAmount];
+        Item[] result = (Item[])new Object[CurrentAmount];
 
         int index = 0;
-        Node<T> currentNode = FirstNode;
+        Node<Item> currentNode = FirstNode;
         while ((index < CurrentAmount) && (currentNode != null)) {
             result[index] = currentNode.getData();
             currentNode = currentNode.getNextNode();
@@ -167,9 +167,9 @@ public class LinkList<T> implements ListInterface<T> {
      * @return boolean Returns true if the linked list contains the entry.
      */
     @Override
-    public boolean contains(T anEntry) {
+    public boolean contains(Item anEntry) {
         boolean found = false;
-        Node<T> currentNode = FirstNode;
+        Node<Item> currentNode = FirstNode;
         while (!found && (currentNode != null)) {
             if (anEntry.equals(currentNode)) {
                 found = true;
@@ -211,9 +211,9 @@ public class LinkList<T> implements ListInterface<T> {
      * @param index Index of the node to retrieve.
      * @return Node<T> Node being returned.
      */
-    public Node<T> getNode(int index) {
+    public Node<Item> getNode(int index) {
 
-        Node<T> currentNode = FirstNode;
+        Node<Item> currentNode = FirstNode;
 
         for (int i = 1; i < index; i++) {
             currentNode = currentNode.getNextNode();

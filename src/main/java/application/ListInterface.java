@@ -1,21 +1,21 @@
 package application;
 
-public interface ListInterface<T> {
-    public void add(T newEntry);
+public interface ListInterface<Item> {
+    public void add(Item newEntry);
 
-    public void add(int newPosition, T newEntry);
+    public void add(int newPosition, Item newEntry);
 
-    public T remove(int givenPosition);
+    public Item remove(int givenPosition);
 
     public void clear();
 
-    public T replace(int givenPosition, T newEntry);
+    public Item replace(int givenPosition, Item newEntry);
 
-    public T getEntry(int givenPosition);
+    public Item getEntry(int givenPosition);
 
-    public T[] toArray();
+    public Item[] toArray();
 
-    public boolean contains(T anEntry);
+    public boolean contains(Item anEntry);
 
     public int getLength();
 
