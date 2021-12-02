@@ -101,8 +101,8 @@ public class CartController implements Initializable{
 	
 	private void setPage(int page, ArrayListBag<Item> items)
 	{
-		int numOfPages = Math.abs((int) Math.ceil(items.size()/3.0)-1);
-		int numOfBackpage = items.size()%3;
+		int numOfPages = Math.abs((int) Math.ceil(items.getCurrentSize()/3.0)-1);
+		int numOfBackpage = items.getCurrentSize()%3;
 		
 		Item first;
 		Item second;
