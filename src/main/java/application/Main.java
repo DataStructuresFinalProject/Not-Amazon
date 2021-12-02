@@ -10,7 +10,7 @@ public class Main extends Application{
 	
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("application/mainPage.fxml"));
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("mainPage.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setResizable(false);
 			primaryStage.setScene(scene);
