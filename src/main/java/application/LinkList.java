@@ -10,14 +10,28 @@ public class LinkList<T> implements ListInterface<T> {
         CurrentAmount = 0;
     }
 
+    public LinkList(T newEntry) {
+        FirstNode = new Node<T>(newEntry);
+        FirstNode.NextNode = null;
+    }
+
     @Override
     public void add(T newEntry) {
-        // TODO Auto-generated method stub
-        
+        Node<T> newNode = new Node<T>(newEntry);
+        if (CurrentAmount == 0) {
+            newNode.NextNode = null;
+        } else {
+            newNode.NextNode = FirstNode;   
+        }
+        CurrentAmount++;
+        FirstNode=newNode;
     }
 
     @Override
     public void add(int newPosition, T newEntry) {
+        if (newPosition > CurrentAmount-1) {
+            
+        }
         // TODO Auto-generated method stub
         
     }
@@ -30,8 +44,10 @@ public class LinkList<T> implements ListInterface<T> {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
-        
+        for (int i = 0; i < CurrentAmount-1; i++) {
+            FirstNode = FirstNode.getNextNode();
+        }
+        FirstNode = null;
     }
 
     @Override
