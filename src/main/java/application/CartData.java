@@ -1,8 +1,10 @@
 package application;
 
+import java.util.ArrayList;
+
 class CartData 
 {
-	private ArrayListBag<Item> shopCart = new ArrayListBag<Item>();
+	private LinkList shopCart = new LinkList();
 	private static CartData instance = null;
 	
 	public static CartData getInstance()
@@ -14,12 +16,12 @@ class CartData
 		return instance;
 	}
 	
-	public ArrayListBag<Item> getShopList()
+	public LinkList getShopList()
 	{
 		return this.shopCart;
 	}
 	
-	public void setShopList(ArrayListBag<Item> cart)
+	public void setShopList(LinkList cart)
 	{
 		this.shopCart = cart;
 	}

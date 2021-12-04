@@ -1,8 +1,6 @@
 package application;
 
-import java.util.Random;
-
-public class Item {
+public class Item{
     private final String Name;
     private double Price;
     private int Quantity;
@@ -50,8 +48,8 @@ public class Item {
      * Adds items into stock
      * @param amount Amount of the item being restocked
      */
-    public void restock(int amount) {
-        Quantity += amount;
+    public void restock() {
+        Quantity++;
     }
 
     
@@ -60,9 +58,8 @@ public class Item {
      * When item is purchased, the price of the item is returned for invoicing and the available quantity is reduced.
      * @return double The price of the item being purchased.
      */
-    public double purchase() {
-        Quantity -= 1;
-        return Price;
+    public void purchase() {
+        Quantity--;
     }
 
     public String getName() {
@@ -79,6 +76,14 @@ public class Item {
     
     public String getImage() {
         return image;
+    }
+    
+    public int getQuantity() {
+    	return Quantity;
+    }
+    
+    public void setQuantity(int quantity) {
+    	Quantity = quantity;
     }
 
     /** 

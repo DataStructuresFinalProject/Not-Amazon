@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +14,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -79,6 +83,7 @@ public class CartController implements Initializable{
     private ImageView topBar;
 
     private int currentPage = 0;
+    LinkList singShopCart;
     
     @FXML
     private void goHome() throws IOException
@@ -95,20 +100,103 @@ public class CartController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		CartData shopCart = CartData.getInstance();
-		ArrayListBag<Item> singShopCart = shopCart.getShopList();
-		//setPage(0, singShopCart);	
+		singShopCart = shopCart.getShopList();
+		
+		subtotal.setText("Subtotal: $"+String.format("%.2f", total()));
+		setPage(0, singShopCart);	
 	}
 	
-	private void setPage(int page, ArrayListBag<Item> items)
+	private double total()
 	{
-		int numOfPages = Math.abs((int) Math.ceil(items.getCurrentSize()/3.0)-1);
-		int numOfBackpage = items.getCurrentSize()%3;
+		double total=0;
+		for (Item x : singShopCart)
+		{
+			total+=x.getPrice();
+		}
+		return total;
+	}
+	
+	@FXML
+	private void remove1()
+	{
+		Item first = singShopCart.getEntry(currentPage*3);
+		if ((currentPage*3 % 3 == 0) && (currentPage != 0))
+		{
+			currentPage--;
+		}
+		singShopCart.remove(first);
+		setPage(currentPage, singShopCart);
+		subtotal.setText("Subtotal: $"+String.format("%.2f", total()));
+	}
+	
+	@FXML
+	private void remove2()
+	{		
+		Item second = singShopCart.getEntry((currentPage*3)+1);
+		if ((currentPage*3 % 3 == 0) && (currentPage != 0))
+		{
+			currentPage--;
+		}
+		
+		singShopCart.remove(second);
+		setPage(currentPage, singShopCart);
+		subtotal.setText("Subtotal: $"+String.format("%.2f", total()));
+	}
+	
+	@FXML
+	private void remove3()
+	{
+		Item third = singShopCart.getEntry((currentPage*3)+2);
+		if ((currentPage*3 % 3 == 0) && (currentPage != 0))
+		{
+			currentPage--;
+		}
+		
+		singShopCart.remove(third);
+		setPage(currentPage, singShopCart);
+		subtotal.setText("Subtotal: $"+String.format("%.2f", total()));
+	}
+	
+	@FXML
+    private void goUp()
+    /**
+     * Moves to previous page
+     */
+    {
+    	currentPage--;
+    	setPage(currentPage, singShopCart);
+    }
+    
+    @FXML
+    private void goDown()
+    /**
+     * Moves to next page
+     */
+    {
+    	currentPage++;
+    	setPage(currentPage, singShopCart);
+    }
+	
+	private void setPage(int page, LinkList items)
+	{
+		int numOfPages = Math.abs((int) Math.ceil(items.getLength()/3.0)-1);
+		
+		int numOfBackpage = items.getLength()%3;
 		
 		Item first;
 		Item second;
 		Item third;
 		
-		if (page == numOfPages)
+		image1.setImage(null);
+		image2.setImage(null);
+		image3.setImage(null);
+		
+		if (numOfPages == 0)
+		{
+			upButton.setDisable(true);
+			downButton.setDisable(true);
+		}
+		else if (page == numOfPages)
 		{
 			upButton.setDisable(false);
 			downButton.setDisable(true);
@@ -128,37 +216,70 @@ public class CartController implements Initializable{
 		{
 			switch(numOfBackpage) {
 				case 1: numOfBackpage = 1;
-					first = items.get((page*3));
+					first = items.getEntry((page*3));
 					name1.setText(first.getName());
-					price1.setText("Price: " + first.getPrice());
+					price1.setText("Price: $"+ String.format("%.2f", first.getPrice()));
+					image1.setImage(new Image(first.getImage()));
+					delete1.setVisible(true);
+					
+					name2.setText("");
+					price2.setText("");
+					delete2.setVisible(false);
+					
+					name3.setText("");
+					price3.setText("");
+					delete3.setVisible(false);
+					
 					break;
 						
 				case 2: numOfBackpage = 2;
-					first = items.get((page*3));
-					second = items.get((page*3)+1);
+					first = items.getEntry((page*3));
+					second = items.getEntry((page*3)+1);
 					name1.setText(first.getName());
-					price1.setText("Price: " + first.getPrice());
+					price1.setText("Price: $"+ String.format("%.2f", first.getPrice()));
+					image1.setImage(new Image(first.getImage()));
+					delete1.setVisible(true);
 					
 					name2.setText(second.getName());
-					price2.setText("Price: " + first.getPrice());
+					price2.setText("Price: $"+ String.format("%.2f", second.getPrice()));
+					image2.setImage(new Image(second.getImage()));
+					delete2.setVisible(true);
 					
+					name3.setText("");
+					price3.setText("");
+					delete3.setVisible(false);
 					break;
+			}
+		}
+		else if ((numOfPages == 1) && (numOfBackpage == 0))
+		{
+			try {
+				goHome();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		else
 		{
-			first = items.get((page*3));
-			second = items.get((page*3)+1);
-			third = items.get((page*3)+2);
+			first = items.getEntry((page*3));
+			second = items.getEntry((page*3)+1);
+			third = items.getEntry((page*3)+2);
 			
 			name1.setText(first.getName());
-			price1.setText("Price: " + first.getPrice());
+			price1.setText("Price: $"+ String.format("%.2f", first.getPrice()));
+			image1.setImage(new Image(first.getImage()));
+			delete1.setVisible(true);
 			
 			name2.setText(second.getName());
-			price2.setText("Price: " + second.getPrice());
+			price2.setText("Price: $"+ String.format("%.2f", second.getPrice()));
+			image2.setImage(new Image(second.getImage()));
+			delete2.setVisible(true);
 			
 			name3.setText(third.getName());
-			price3.setText("Price: " + third.getPrice());
+			price3.setText("Price: $"+ String.format("%.2f", third.getPrice()));
+			image3.setImage(new Image(third.getImage()));
+			delete3.setVisible(true);
 		}
 	}
 }

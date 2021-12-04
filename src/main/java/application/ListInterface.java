@@ -1,21 +1,23 @@
 package application;
 
-public interface ListInterface<Item> {
-    public void add(Item newEntry);
+import java.util.ArrayList;
 
-    public void add(int newPosition, Item newEntry);
+public interface ListInterface<T> {
+    public void add(T newEntry);
 
-    public Item remove(int givenPosition);
+    public void add(int newPosition, T newEntry);
+
+    public T remove(int givenPosition);
 
     public void clear();
 
-    public Item replace(int givenPosition, Item newEntry);
+    public T replace(int givenPosition, T newEntry);
 
-    public Item getEntry(int givenPosition);
+    public T getEntry(int givenPosition);
 
     public Item[] toArray();
 
-    public boolean contains(Item anEntry);
+    public boolean contains(T anEntry);
 
     public int getLength();
 

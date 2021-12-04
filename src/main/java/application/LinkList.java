@@ -1,6 +1,10 @@
 package application;
 
-public class LinkList<Item> implements ListInterface<Item> {
+import java.util.ArrayList;
+
+
+
+public class LinkList implements ListInterface<Item> {
 
     Node<Item> FirstNode;
     private int CurrentAmount;
@@ -9,18 +13,9 @@ public class LinkList<Item> implements ListInterface<Item> {
      * Default Constructor that initializes a list with no nodes.
      */
     public LinkList() {
-        CurrentAmount = 0;
+    	FirstNode = null;
+    	CurrentAmount=0;
     }
-
-    /**
-     * Alternate constructor that creates a LinkedList with a First Node.
-     * @param newEntry Data entry to be assigned to the first node in the chain.
-     */
-    public LinkList(Item newEntry) {
-        FirstNode = new Node<Item>(newEntry);
-        FirstNode.NextNode = null;
-    }
-
     
     /** 
      * Creates a new node at the beginning of the chain and adds the data value to the node.
@@ -28,14 +23,16 @@ public class LinkList<Item> implements ListInterface<Item> {
      */
     @Override
     public void add(Item newEntry) {
-        Node<Item> newNode = new Node<Item>(newEntry);
-        if (CurrentAmount == 0) {
-            newNode.NextNode = null;
-        } else {
-            newNode.NextNode = FirstNode;   
-        }
-        CurrentAmount++;
-        FirstNode=newNode;
+    	if (this.isEmpty())
+		{
+    		FirstNode = new Node<Item>(newEntry, FirstNode);
+		}
+		else
+		{
+			Node<Item> lastNode = FirstNode.getNodeAt(FirstNode.size(FirstNode), FirstNode);
+			 lastNode.setNextNode(new Node<Item>(newEntry, FirstNode));
+		}
+    	CurrentAmount++;
     }
 
     
@@ -46,23 +43,8 @@ public class LinkList<Item> implements ListInterface<Item> {
      */
     @Override
     public void add(int newPosition, Item newEntry) {
-        if ((newPosition >= 1) && (newPosition <= CurrentAmount + 1)) {
-            Node<Item> newNode = new Node<Item>(newEntry);
-
-            if (newPosition == 1) {
-                newNode.setNextNode(FirstNode);
-                FirstNode = newNode;
-            } else {
-                Node<Item> nodeBefore = getNode(newPosition-1);
-                Node<Item> nodeAfter = nodeBefore.getNextNode();
-                newNode.setNextNode(nodeAfter);
-                nodeBefore.setNextNode(newNode);
-            }
-
-            CurrentAmount ++;
-        } else {
-            throw new IndexOutOfBoundsException("Illegal position given to add operation.");
-        }
+    	FirstNode.addBetween(newEntry, newPosition, FirstNode);
+    	CurrentAmount++;
     }
 
     
@@ -144,21 +126,20 @@ public class LinkList<Item> implements ListInterface<Item> {
      * @return T[] The compiled array filed with the data values.
      */
     @Override
-    public Item[] toArray() {
-
-        @SuppressWarnings("unchecked")
-        Item[] result = (Item[])new Object[CurrentAmount];
-
-        int index = 0;
-        Node<Item> currentNode = FirstNode;
-        while ((index < CurrentAmount) && (currentNode != null)) {
-            result[index] = currentNode.getData();
-            currentNode = currentNode.getNextNode();
-            index++;
-        }
-
-        return result;
-    }
+    public Item[] toArray()
+	{
+		@SuppressWarnings("unchecked")
+		Item[] result = new Item[CurrentAmount];
+		int index = 0;
+		Node<Item> currentNode = FirstNode;
+		while ((index < CurrentAmount) && (currentNode != null))
+		{
+			result[index] = (Item) currentNode.getData();
+			currentNode = currentNode.getNextNode();
+			index++;
+		}
+		return result;
+	}
 
     
     /** 

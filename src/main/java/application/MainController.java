@@ -5,17 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -79,11 +73,20 @@ public class MainController implements Initializable{
     
     private int currentPage = 0;
     private ArrayList<Item> itemStorage = new ArrayList<Item>();
-    private ArrayList<Item> copyItemStorage = new ArrayList<Item>(itemStorage);
+    // item list that changes
+    
+    private ArrayList<Item> originalItemStorage = new ArrayList<Item>(itemStorage);
+    // item list that holds same values as original itemStorage from initialize
+    
+    private ArrayList<Item> searchStorage = new ArrayList<Item>();
+    // item list that holds original searched items
+    
+    private boolean searchFlag = false;
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+    	
 		File file = new File("ItemInv.txt");
 	    Scanner sc = null;
 	    sortDrop.getItems().addAll("No sort", "Price Ascending", "Price Descending", "Alphabetical");
@@ -113,7 +116,7 @@ public class MainController implements Initializable{
 	    	Item tempItem = new Item(name, price, quantity, image);
 	    	itemStorage.add(tempItem);
 	    }
-	    copyItemStorage = itemStorage;
+	    originalItemStorage = itemStorage;
 	    setPage(0, itemStorage);   
 	}
     
@@ -128,7 +131,6 @@ public class MainController implements Initializable{
     	try
     	{
 	    	Item currentItem = itemStorage.get(((Integer.parseInt(id.substring(id.length()-1)))-1)+(4*currentPage));
-	    	System.out.println(currentItem);
 	    	ChosenItemData itemStore = ChosenItemData.getInstance();
 	    	itemStore.setCurrentItem(currentItem);
 	    	
@@ -172,17 +174,21 @@ public class MainController implements Initializable{
      * it or its pieces, and displays them
      */
     {
+    	searchFlag = true;
     	if (!searchBar.getText().trim().isEmpty())
     	{
-	    	ArrayList<Item> searchArrayList = searchString(searchBar.getText());
+        	ArrayList<Item> itemStorageClone = new ArrayList<>(originalItemStorage);
+        	ArrayList<Item> newList = new ArrayList<Item>();
+	    	ArrayList<Item> searchArrayList = searchString(searchBar.getText(), itemStorageClone, newList);
 	    	if (!searchArrayList.isEmpty())
 	    	{
 		    	currentPage = 0;
-		    	copyItemStorage = itemStorage;
 		    	itemStorage = searchArrayList;
+		    	searchStorage = itemStorage;
 		    	setPage(currentPage, itemStorage);
 	    	}
     	}
+    	sortDrop.setValue("No sort");
     }
     
     @FXML
@@ -191,8 +197,9 @@ public class MainController implements Initializable{
      * Returns to first page
      */
     {
+    	searchFlag = false;
     	sortDrop.setValue("No sort");
-    	itemStorage = copyItemStorage;
+    	itemStorage = originalItemStorage;
     	currentPage = 0;
     	setPage(currentPage, itemStorage);
     }
@@ -207,20 +214,18 @@ public class MainController implements Initializable{
     	return Math.abs((int) Math.ceil(items.size()/4.0)-1);
     }
     
-    private ArrayList<Item> searchString(String input)
+    private ArrayList<Item> searchString(String input, ArrayList<Item> itemStorageClone, ArrayList<Item> newList)
     /**
      * 
      * @param input
      * @return ArrayList<Item>
      */
-    {
-    	ArrayList<Item> itemStorageClone = new ArrayList<>(itemStorage);
-    	ArrayList<Item> newList = new ArrayList<Item>();
-    	
+    {	
     	for(Item x : itemStorageClone)
     	{
     		if((x.getName().length() >= input.length()) && (x.getName().substring(0, input.length()).equalsIgnoreCase(input)))
     		{
+    			
     			newList.add(x);
     		}
     	}
@@ -235,22 +240,25 @@ public class MainController implements Initializable{
     	
     	if (input.length() > 1)
     	{
-    		newList = searchString(input.substring(0, (input.length()-1)));
+    		newList = searchString(input.substring(0, (input.length()-1)), itemStorageClone, newList);
     	}
-    	
     	return newList;
     }
     
     @FXML
     private void goCart() throws IOException
     {
-    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("cartPage.fxml"));
-		Scene itemScene = new Scene(root2);
-		Stage window = (Stage) item1.getScene().getWindow();
-		window.setResizable(false);
-		window.setScene(itemScene);
-		window.show();
-
+    	searchFlag = false;
+    	CartData shopCart = CartData.getInstance();
+		if (!shopCart.getShopList().isEmpty())
+		{
+	    	Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("cartPage.fxml"));
+			Scene itemScene = new Scene(root2);
+			Stage window = (Stage) item1.getScene().getWindow();
+			window.setResizable(false);
+			window.setScene(itemScene);
+			window.show();
+		}
     }
     
     @SuppressWarnings("unchecked")
@@ -267,7 +275,14 @@ public class MainController implements Initializable{
     		
     		switch(sortDrop.getValue()) {
     			case "No sort":
-    				itemStorage = copyItemStorage;
+    				if (searchFlag == true)
+    				{
+    					itemStorage = searchStorage;
+    				}
+    				else
+    				{
+    					itemStorage = originalItemStorage;
+    				}
     				setPage(currentPage, itemStorage);
     				break;
     			case "Price Ascending":
@@ -360,14 +375,6 @@ public class MainController implements Initializable{
     	});
     }
     
-    private void resetImages()
-    {
-    	item1.setImage(null);
-    	item2.setImage(null);
-    	item3.setImage(null);
-    	item4.setImage(null);
-    }
-    
 	private void setPage(int page, ArrayList<Item> items)
 	{
 		int numOfPages = findNumOfPages(items);
@@ -379,7 +386,10 @@ public class MainController implements Initializable{
 		Item third;
 		Item fourth;
 		
-		resetImages();
+		item1.setImage(null);
+    	item2.setImage(null);
+    	item3.setImage(null);
+    	item4.setImage(null);
 		
 		if (numOfPages == 0)
 		{
@@ -403,73 +413,73 @@ public class MainController implements Initializable{
 		}
 		
 		if ((page == numOfPages) && (numOfBackpage != 0))
-		{
-			switch(numOfBackpage) {
-				case 1: numOfBackpage = 1;
-					first = items.get((page*4));
-					
-					item1.setImage(new Image(first.getImage()));
-					info1.setText(first.getName() + " - " + first.getPrice());
-					
-					info2.setText("");
-					
-					info3.setText("");
-					
-					info4.setText("");
-					break;
-						
-				case 2: numOfBackpage = 2;
-					first = items.get((page*4));
-					second = items.get((page*4)+1);
-					
-					item1.setImage(new Image(first.getImage()));
-					info1.setText(first.getName() + " - " + first.getPrice());
-					
-					item2.setImage(new Image(second.getImage()));
-					info2.setText(second.getName() + " - " + second.getPrice());
-					
-					info3.setText("");
-					
-					info4.setText("");
-					break;
-				
-				case 3: numOfBackpage = 3;
-					first = items.get((page*4));
-					second = items.get((page*4)+1);
-					third = items.get((page*4)+2);
-					
-					item1.setImage(new Image(first.getImage()));
-					info1.setText(first.getName() + " - " + first.getPrice());
-					
-					item2.setImage(new Image(second.getImage()));
-					info2.setText(second.getName() + " - " + second.getPrice());
-					
-					item3.setImage(new Image(third.getImage()));
-					info3.setText(third.getName() + " - " + third.getPrice());
-					
-					info4.setText("");
-					break;
-			}
-		}
-		else
-		{
-			first = items.get((page*4));
-			second = items.get((page*4)+1);
-			third = items.get((page*4)+2);
-			fourth = items.get((page*4)+3);
-			
-			item1.setImage(new Image(first.getImage()));
-			info1.setText(first.getName() + " - " + first.getPrice());
-			
-			item2.setImage(new Image(second.getImage()));
-			info2.setText(second.getName() + " - " + second.getPrice());
-			
-			item3.setImage(new Image(third.getImage()));
-			info3.setText(third.getName() + " - " + third.getPrice());
-			
-			item4.setImage(new Image(fourth.getImage()));
-			info4.setText(fourth.getName() + " - " + fourth.getPrice());
-		}
+	       {
+	           switch(numOfBackpage) {
+	               case 1: numOfBackpage = 1;
+	                   first = items.get((page*4));
+	                  
+	                   item1.setImage(new Image(first.getImage()));
+	                   info1.setText(first.getName() + " - $" + String.format("%.2f", first.getPrice()));
+	                  
+	                   info2.setText("");
+	                  
+	                   info3.setText("");
+	                  
+	                   info4.setText("");
+	                   break;
+	                      
+	               case 2: numOfBackpage = 2;
+	                   first = items.get((page*4));
+	                   second = items.get((page*4)+1);
+	                  
+	                   item1.setImage(new Image(first.getImage()));
+	                   info1.setText(first.getName() + " - $" + String.format("%.2f", first.getPrice()));
+	                  
+	                   item2.setImage(new Image(second.getImage()));
+	                   info2.setText(second.getName() + " - $" + String.format("%.2f", second.getPrice()));
+	                  
+	                   info3.setText("");
+	                  
+	                   info4.setText("");
+	                   break;
+	              
+	               case 3: numOfBackpage = 3;
+	                   first = items.get((page*4));
+	                   second = items.get((page*4)+1);
+	                   third = items.get((page*4)+2);
+	                  
+	                   item1.setImage(new Image(first.getImage()));
+	                   info1.setText(first.getName() + " - $" + String.format("%.2f", first.getPrice()));
+	                  
+	                   item2.setImage(new Image(second.getImage()));
+	                   info2.setText(second.getName() + " - $" + String.format("%.2f", second.getPrice()));
+	                  
+	                   item3.setImage(new Image(third.getImage()));
+	                   info3.setText(third.getName() + " - $" + String.format("%.2f", third.getPrice()));
+	                  
+	                   info4.setText("");
+	                   break;
+	           }
+	       }
+	       else
+	       {
+	           first = items.get((page*4));
+	           second = items.get((page*4)+1);
+	           third = items.get((page*4)+2);
+	           fourth = items.get((page*4)+3);
+	          
+	           item1.setImage(new Image(first.getImage()));
+	           info1.setText(first.getName() + " - $" + String.format("%.2f", first.getPrice()));
+	          
+	           item2.setImage(new Image(second.getImage()));
+	           info2.setText(second.getName() + " - $" + String.format("%.2f", second.getPrice()));
+	          
+	           item3.setImage(new Image(third.getImage()));
+	           info3.setText(third.getName() + " - $" + String.format("%.2f", third.getPrice()));
+	          
+	           item4.setImage(new Image(fourth.getImage()));
+	           info4.setText(fourth.getName() + " - $" + String.format("%.2f", fourth.getPrice()));
+	       }
 	}
 }
 
