@@ -2,9 +2,9 @@ package application;
 
 
 public class Node<T> {
-    T data;
-    Node<T> nextNode;
-    int index;
+    private T data;
+    private Node<T> nextNode;
+    private int index;
     
     /**
      * Default constructor

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class LinkList implements ListInterface<Item> {
 
-    Node<Item> FirstNode;
+    private Node<Item> FirstNode;
     private int CurrentAmount;
 
     /**
@@ -118,6 +118,27 @@ public class LinkList implements ListInterface<Item> {
         } else {
             throw new IndexOutOfBoundsException("Illegal position given to remove operation.");
         }
+    }
+
+    
+    /** 
+     * Searches for a prespecified item in a LinkedList.
+     * @param anEntry Item to be found in LinkedList
+     * @return int Index of the item in the LinkedList
+     */
+    public int getIndexOf(Item anEntry) {
+        boolean found = false;
+        int index = 1;
+        Node<Item> search = FirstNode;
+        while (!found || index <= CurrentAmount) {
+            if (anEntry.equals(search.getData())) {
+                found = true;
+                return index;
+            }
+            index++;
+        }
+        
+        return index;
     }
 
     
