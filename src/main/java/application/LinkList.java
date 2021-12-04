@@ -151,8 +151,8 @@ public class LinkList implements ListInterface<Item> {
     public boolean contains(Item anEntry) {
         boolean found = false;
         Node<Item> currentNode = FirstNode;
-        while (!found && (currentNode != null)) {
-            if (anEntry.equals(currentNode)) {
+        while (!found && (currentNode.getData() != null)) {
+            if (anEntry.equals(currentNode.getData())) {
                 found = true;
             } else {
                 currentNode = currentNode.getNextNode();

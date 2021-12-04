@@ -109,7 +109,7 @@ public class CartController implements Initializable{
 	private double total()
 	{
 		double total=0;
-		for (Item x : singShopCart)
+		for (Item x : singShopCart.toArray())
 		{
 			total+=x.getPrice();
 		}
